@@ -53,7 +53,7 @@ class App:
     def on_loop(self):
         self._hits.update()
         for h in self.houses:
-            h.update()
+            h.update(self._hits)
         #self.house.update()
         if pygame.key.get_pressed()[pygame.K_SPACE]:
             self.active_house.warmup()
@@ -61,7 +61,7 @@ class App:
             for h in self.houses:
                 if(abs(h.get_accuracy())<20):
                     self.score=self.score+1
-                    self._hits.spawn(h.x,h.y)
+                    self._hits.spawn(h.x+(h.w/2),h.y+(h.h/2))
         pass
     def on_render(self):
         self._display_surf.fill((200,200,255))
