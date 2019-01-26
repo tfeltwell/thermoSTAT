@@ -11,6 +11,8 @@ class App:
         self.clock = None
         self.houses = None
         self.active_house = None
+        self.score = 0
+        self._score_font = None
 
     def on_init(self):
         pygame.init()
@@ -21,12 +23,15 @@ class App:
         hx = self.height/3
         self.houses = [House(wx*1,hx*1),House(wx*2,hx*1),House(wx*3,hx*1),House(wx*4,hx*1),House(wx*1,hx*2),House(wx*2,hx*2),House(wx*3,hx*2),House(wx*4,hx*2)]
         self.active_house = self.houses[0]
+        self._score_font = pygame.font.Font("beon.ttf",42)
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
             self._running = False
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_1:
+            if event.key == pygame.K_ESCAPE:
+                self._running = False
+            elif event.key == pygame.K_1:
                 self.active_house=self.houses[0]
             elif event.key == pygame.K_2:
                 self.active_house=self.houses[1]
@@ -48,14 +53,16 @@ class App:
         #self.house.update()
         if pygame.key.get_pressed()[pygame.K_SPACE]:
             self.active_house.warmup()
-        #    self.temperature = self.temperature +5
-        #if(self.temperature>0):
-        #        self.temperature = self.temperature - 1
+        if(pygame.time.get_ticks() % 10 == 0):
+            for h in self.houses:
+                if(abs(h.get_accuracy())<20):
+                    self.score=self.score+1
         pass
     def on_render(self):
         self._display_surf.fill((200,200,255))
         for h in self.houses:
             h.draw(self._display_surf)
+        self._display_surf.blit(self._score_font.render('$%.3f' % (float(self.score)/3000),True,(0,0,0)),(0,0))
         pygame.display.flip()
         pass
     def on_cleanup(self):
