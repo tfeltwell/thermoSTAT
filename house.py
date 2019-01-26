@@ -4,10 +4,12 @@ import random
 class House:
     def __init__(self,inx,iny):
         self.temperature = random.randint(0,255)
-        self._surface = pygame.Surface((50,50))
+        self._w = 80
+        self._h = 80
+        self._surface = pygame.Surface((self._w,self._h))
         self._insulation = random.randint(8,11) #houses cool down at different rates
-        self.x = inx
-        self.y = iny
+        self.x = inx-(self._w/2)
+        self.y = iny-(self._h/2)
 
     def update(self):
         if(self.temperature>0):

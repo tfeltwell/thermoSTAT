@@ -6,7 +6,7 @@ class App:
     def __init__(self):
         self._running = True
         self._display_surf = None
-        self.size = self.weight, self.height = 640, 400
+        self.size = self.width, self.height = 640, 400
         self.temperature = 255
         self.clock = None
         self.houses = None
@@ -17,7 +17,9 @@ class App:
         self.clock = pygame.time.Clock()
         self._display_surf = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
-        self.houses = [House(0,0),House(100,0),House(200,0),House(300,0),House(0,100),House(100,100),House(200,100),House(300,100)]
+        wx = self.width/5
+        hx = self.height/3
+        self.houses = [House(wx*1,hx*1),House(wx*2,hx*1),House(wx*3,hx*1),House(wx*4,hx*1),House(wx*1,hx*2),House(wx*2,hx*2),House(wx*3,hx*2),House(wx*4,hx*2)]
         self.active_house = self.houses[0]
 
     def on_event(self, event):
