@@ -1,5 +1,6 @@
 import pygame
 from house import *
+from car import *
 from pygame.locals import *
 from markers import *
 
@@ -7,7 +8,7 @@ class App:
     def __init__(self):
         self._running = True
         self._display_surf = None
-        self.size = self.width, self.height = 1200, 800
+        self.size = self.width, self.height = 1280, 720
         self.temperature = 255
         self.clock = None
         self.houses = None
@@ -15,6 +16,9 @@ class App:
         self.score = 0
         self._score_font = None
         self._hits = None
+        self.house_image = None
+        self._cars = None
+
 
     def on_init(self):
         pygame.init()
@@ -23,10 +27,15 @@ class App:
         self._running = True
         wx = self.width/5
         hx = self.height/3
-        self.houses = [House(wx*1,hx*1),House(wx*2,hx*1),House(wx*3,hx*1),House(wx*4,hx*1),House(wx*1,hx*2),House(wx*2,hx*2),House(wx*3,hx*2),House(wx*4,hx*2)]
+        #self.houses = [House(wx*1,hx*1),House(wx*2,hx*1),House(wx*3,hx*1),House(wx*4,hx*1),House(wx*1,hx*2),House(wx*2,hx*2),House(wx*3,hx*2),House(wx*4,hx*2)]
+        self.houses = [House(270,55),House(wx*2,hx*1),House(wx*3,hx*1),House(wx*4,hx*1),House(wx*1,hx*2),House(wx*2,hx*2),House(wx*3,hx*2),House(wx*4,hx*2)]
+
         self.active_house = self.houses[0]
         self._score_font = pygame.font.Font("beon.ttf",42)
         self._hits = Hits()
+        self._cars = Cars()
+        self.house_image = pygame.transform.scale(pygame.image.load("house.png").convert(),(1280,720))
+        self.house_image.set_colorkey((255,0,255))
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
@@ -52,6 +61,7 @@ class App:
                 self.active_house=self.houses[7]
     def on_loop(self):
         self._hits.update()
+        self._cars.update()
         for h in self.houses:
             h.update(self._hits)
         #self.house.update()
@@ -62,12 +72,18 @@ class App:
                 if(abs(h.get_accuracy())<20):
                     self.score=self.score+1
                     self._hits.spawn(h.x+(h.w/2),h.y+(h.h/2))
+                elif(abs(h.get_accuracy()>100)):
+                    self.score=self.score-1
+                    self._hits.spawn_bad(h.x+(h.w/2),h.y+(h.h/2))
         pass
     def on_render(self):
         self._display_surf.fill((200,200,255))
         for h in self.houses:
             h.draw(self._display_surf)
+        self._display_surf.blit(self.house_image,(0,0))
+        self._cars.draw(self._display_surf)
         self._hits.draw(self._display_surf)
+
         self._display_surf.blit(self._score_font.render('$%.3f' % (float(self.score)/3000),True,(0,0,0)),(0,0))
         pygame.display.flip()
         pass
