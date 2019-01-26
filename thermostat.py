@@ -1,40 +1,75 @@
 import pygame
+from house import *
+from pygame.locals import *
 
-# define a main function
-def main():
-    temperature = 255
-    # initialize the pygame module
-    pygame.init()
-    clock = pygame.time.Clock()
-    # load and set the logo
-    #logo = pygame.image.load("logo32x32.png")
-    #pygame.display.set_icon(logo)
-    pygame.display.set_caption("Thermostat")
+class App:
+    def __init__(self):
+        self._running = True
+        self._display_surf = None
+        self.size = self.weight, self.height = 640, 400
+        self.temperature = 255
+        self.clock = None
+        self.houses = None
+        self.active_house = None
 
-    # create a surface on screen that has the size of 240 x 180
-    screen = pygame.display.set_mode((640,480))
+    def on_init(self):
+        pygame.init()
+        self.clock = pygame.time.Clock()
+        self._display_surf = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
+        self._running = True
+        self.houses = [House(0,0),House(100,0),House(200,0),House(300,0),House(0,100),House(100,100),House(200,100),House(300,100)]
+        self.active_house = self.houses[0]
 
-    # define a variable to control the main loop
-    running = True
-
-    # main loop
-    while running:
-        clock.tick(30)
-        # event handling, gets all event from the event queue
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-        if pygame.key.get_pressed()[pygame.K_SPACE] and temperature<250:
-            temperature = temperature +5
-        screen.fill((temperature,0,255-temperature))
-        if(temperature>0):
-            temperature = temperature - 1
-
+    def on_event(self, event):
+        if event.type == pygame.QUIT:
+            self._running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_1:
+                self.active_house=self.houses[0]
+            elif event.key == pygame.K_2:
+                self.active_house=self.houses[1]
+            elif event.key == pygame.K_3:
+                self.active_house=self.houses[2]
+            elif event.key == pygame.K_4:
+                self.active_house=self.houses[3]
+            elif event.key == pygame.K_5:
+                self.active_house=self.houses[4]
+            elif event.key == pygame.K_6:
+                self.active_house=self.houses[5]
+            elif event.key == pygame.K_7:
+                self.active_house=self.houses[6]
+            elif event.key == pygame.K_8:
+                self.active_house=self.houses[7]
+    def on_loop(self):
+        for h in self.houses:
+            h.update()
+        #self.house.update()
+        if pygame.key.get_pressed()[pygame.K_SPACE]:
+            self.active_house.warmup()
+        #    self.temperature = self.temperature +5
+        #if(self.temperature>0):
+        #        self.temperature = self.temperature - 1
+        pass
+    def on_render(self):
+        self._display_surf.fill((200,200,255))
+        for h in self.houses:
+            h.draw(self._display_surf)
         pygame.display.flip()
+        pass
+    def on_cleanup(self):
+        pygame.quit()
 
+    def on_execute(self):
+        if self.on_init() == False:
+            self._running = False
 
-# run the main function only if this module is executed as the main script
-# (if you import this as a module then nothing is executed)
-if __name__=="__main__":
-    # call the main function
-    main()
+        while( self._running ):
+            for event in pygame.event.get():
+                self.on_event(event)
+            self.clock.tick(30)
+            self.on_loop()
+            self.on_render()
+        self.on_cleanup()
+if __name__ == "__main__" :
+    theApp = App()
+    theApp.on_execute()
