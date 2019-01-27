@@ -16,7 +16,7 @@ class Cars:
                 self.cars.append(Car(self.car_image,(-100,370),True))
             else:
                 self.cars.append(Car(self.car_image,(1300,318),False))
-            self._last_car = pygame.time.get_ticks() + 1000 + random.randint(0,8000)
+            self._last_car = pygame.time.get_ticks() + 4000 + random.randint(3000,15000)
         
         return
     def draw(self,display):
@@ -41,6 +41,7 @@ class Car:
     def draw(self,display):
         if(self.right):
             display.blit(pygame.transform.flip(self._img,True,False),self.coord)
+            #display.blit(self._img,self.coord)
         else:
             display.blit(self._img,self.coord)
         return
