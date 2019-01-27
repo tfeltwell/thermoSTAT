@@ -3,6 +3,7 @@ from house import *
 from car import *
 from pygame.locals import *
 from markers import *
+import RPi.GPIO as GPIO
 
 class App:
     def __init__(self):
@@ -22,6 +23,10 @@ class App:
 
     def on_init(self):
         pygame.init()
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(18,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
+
         self.clock = pygame.time.Clock()
         self._display_surf = pygame.display.set_mode(self.size, pygame.FULLSCREEN)#pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
@@ -65,7 +70,9 @@ class App:
         for h in self.houses:
             h.update(self._hits)
         #self.house.update()
-        if pygame.key.get_pressed()[pygame.K_SPACE]:
+
+        #if pygame.key.get_pressed()[pygame.K_SPACE]:
+        if GPIO.input(18)==GPIO.HIGH:
             self.active_house.warmup()
         if(pygame.time.get_ticks() % 20 == 0):
             for h in self.houses:
