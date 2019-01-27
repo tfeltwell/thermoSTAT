@@ -27,7 +27,12 @@ class App:
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(18,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
 
+	pygame.mixer.music.load("background.wav")
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.play(-1)
+        self.channel1 = pygame.mixer.Channel(0)
 	self.boiler = pygame.mixer.Sound("boiler.wav")
+        
 
         self.clock = pygame.time.Clock()
         self._display_surf = pygame.display.set_mode(self.size,pygame.FULLSCREEN)# pygame.HWSURFACE | pygame.DOUBLEBUF)
@@ -75,11 +80,11 @@ class App:
         #if pygame.key.get_pressed()[pygame.K_SPACE]:
         if GPIO.input(18)==GPIO.HIGH:
             self.active_house.warmup()
-            if not pygame.mixer.get_busy():
-                self.boiler.play()
+            if not self.channel1.get_busy():
+                self.channel1.play(self.boiler)
 	else:
-            if pygame.mixer.get_busy():
-                self.boiler.fadeout(500)
+            if self.channel1.get_busy():
+                self.channel1.fadeout(500)
         if(pygame.time.get_ticks() % 20 == 0):
             for h in self.houses:
                 if(abs(h.get_accuracy())<20):
