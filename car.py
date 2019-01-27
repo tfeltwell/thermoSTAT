@@ -29,7 +29,7 @@ class Car:
         self._img = img
         self.coord = coord
         self.right = right # travelling to the right?
-        self.speed = random.randint(6,10)
+        self.speed = random.randint(7,10)
 
         return
     def update(self):

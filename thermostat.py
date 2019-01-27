@@ -28,7 +28,7 @@ class App:
         wx = self.width/5
         hx = self.height/3
         #self.houses = [House(wx*1,hx*1),House(wx*2,hx*1),House(wx*3,hx*1),House(wx*4,hx*1),House(wx*1,hx*2),House(wx*2,hx*2),House(wx*3,hx*2),House(wx*4,hx*2)]
-        self.houses = [House(270,55),House(wx*2,hx*1),House(wx*3,hx*1),House(wx*4,hx*1),House(wx*1,hx*2),House(wx*2,hx*2),House(wx*3,hx*2),House(wx*4,hx*2)]
+        self.houses = [House(272,88),House(572,88),House(848,88),House(1146,85), House(260,643),House(559,641),House(837,642),House(1134,640)]
 
         self.active_house = self.houses[0]
         self._score_font = pygame.font.Font("beon.ttf",42)

@@ -6,8 +6,8 @@ class House:
     def __init__(self,inx,iny):
         self.temperature = random.randint(0,255)
         self.desired_temperature = random.randint(0,255)
-        self.w = 80
-        self.h = 80
+        self.w = 165
+        self.h = 142
         self._surface = pygame.Surface((self.w,self.h))
         self._insulation = random.randint(8,11) #houses cool down at different rates
         self.x = inx-(self.w/2)
