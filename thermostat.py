@@ -23,7 +23,7 @@ class App:
     def on_init(self):
         pygame.init()
         self.clock = pygame.time.Clock()
-        self._display_surf = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
+        self._display_surf = pygame.display.set_mode(self.size, pygame.FULLSCREEN)#pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
         wx = self.width/5
         hx = self.height/3
@@ -67,7 +67,7 @@ class App:
         #self.house.update()
         if pygame.key.get_pressed()[pygame.K_SPACE]:
             self.active_house.warmup()
-        if(pygame.time.get_ticks() % 10 == 0):
+        if(pygame.time.get_ticks() % 20 == 0):
             for h in self.houses:
                 if(abs(h.get_accuracy())<20):
                     self.score=self.score+1
@@ -97,7 +97,7 @@ class App:
         while( self._running ):
             for event in pygame.event.get():
                 self.on_event(event)
-            self.clock.tick(30)
+            #self.clock.tick(50)
             self.on_loop()
             self.on_render()
         self.on_cleanup()
