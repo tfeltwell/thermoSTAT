@@ -13,7 +13,7 @@ class House:
         self.x = inx-(self.w/2)
         self.y = iny-(self.h/2)
         #self._surface.set_alpha(180)
-	self.next_change = random.randint(500,2000)
+        self.next_change = random.randint(500,2000)
         self.channel2 = pygame.mixer.Channel(1)
         self.bing = pygame.mixer.Sound("bing.wav")
         self.bing.set_volume(0.2)
@@ -28,7 +28,7 @@ class House:
             hits.spawn_warning(self.x+(self.w/2),self.y+(self.h/2))
             self.next_change = random.randint(550,900)
             if not self.channel2.get_busy():
-		self.channel2.play(self.bing)
+                self.channel2.play(self.bing)
 	else:
 	    self.next_change = self.next_change -1
 
